@@ -1,9 +1,141 @@
-<html>
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary SEO -->
+  <title>Miguel Gomez — Portfolio &amp; Personal Site</title>
+  <meta name="description" content="Miguel Gomez's personal website and portfolio. Learn about my work, projects, and how to get in touch.">
+  <meta name="author" content="Miguel Gomez">
+  <link rel="canonical" href="https://migo55.github.io/">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Miguel Gomez — Portfolio &amp; Personal Site">
+  <meta property="og:description" content="Miguel Gomez's personal website and portfolio. Learn about my work, projects, and how to get in touch.">
+  <meta property="og:url" content="https://migo55.github.io/">
+  <meta property="og:image" content="https://migo55.github.io/og-image.png">
+  <meta property="og:site_name" content="Miguel Gomez">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Miguel Gomez — Portfolio &amp; Personal Site">
+  <meta name="twitter:description" content="Miguel Gomez's personal website and portfolio. Learn about my work, projects, and how to get in touch.">
+  <meta name="twitter:image" content="https://migo55.github.io/og-image.png">
+
+  <!-- Structured data: helps Google understand who this page is about -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Miguel Gomez",
+    "url": "https://migo55.github.io/",
+    "sameAs": []
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1a1a2e;
+      --muted: #555;
+      --accent: #3b5bdb;
+      --card: #f5f7ff;
+      --border: #e3e8f5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12141c;
+        --fg: #f0f2f8;
+        --muted: #a9b0c4;
+        --accent: #7c93f5;
+        --card: #1b1e2b;
+        --border: #2a2f42;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; }
+    header { margin-bottom: 3rem; }
+    h1 { font-size: 2.5rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 1.2rem; color: var(--muted); margin: 0; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.75rem; }
+    p { margin: 0 0 1rem; }
+    .cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .card h3 { margin: 0 0 0.35rem; font-size: 1rem; }
+    .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .links a {
+      color: var(--accent);
+      text-decoration: none;
+      margin-right: 1.25rem;
+      font-weight: 500;
+    }
+    .links a:hover { text-decoration: underline; }
+    footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+  </style>
+</head>
 <body>
-  <h1>MIGUEL GOMEZ</h1>
-  <p>Welcome to my website!</p>
-  <img src="https://content.codecademy.com/articles/github-pages-via-web-app/happy-ice-cream.gif" />
+  <div class="wrap">
+    <header>
+      <h1>Miguel Gomez</h1>
+      <p class="tagline">Welcome to my corner of the web.</p>
+    </header>
+
+    <section>
+      <h2>About</h2>
+      <p>
+        Hi, I'm Miguel. This is my personal site where I share what I'm working on
+        and how to get in touch. <!-- TODO: replace with a real 2–3 sentence bio:
+        who you are, what you do, and what you want visitors to know. -->
+      </p>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Project One</h3>
+          <p>A short description of what it is and why it matters.</p>
+        </div>
+        <div class="card">
+          <h3>Project Two</h3>
+          <p>A short description of what it is and why it matters.</p>
+        </div>
+      </div>
+      <!-- TODO: swap these placeholder cards for real projects, each ideally
+           linking out to a repo, demo, or write-up. -->
+    </section>
+
+    <section>
+      <h2>Connect</h2>
+      <p class="links">
+        <!-- TODO: fill in real profile URLs. These links double as SEO signals
+             (add each one to the "sameAs" array in the JSON-LD block above). -->
+        <a href="#" rel="me">GitHub</a>
+        <a href="#" rel="me">LinkedIn</a>
+        <a href="mailto:you@example.com">Email</a>
+      </p>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 Miguel Gomez</p>
+    </footer>
+  </div>
 </body>
- 
 </html>
