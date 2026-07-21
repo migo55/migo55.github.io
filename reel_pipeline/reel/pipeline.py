@@ -17,6 +17,7 @@ from dataclasses import dataclass, field
 
 from .grouping import group_by_room, load_photos
 from .ordering import OrderedRoom, order_room
+from .plan import Plan, approved_hops
 from .providers import ClipRequest, VideoProvider
 
 
@@ -117,5 +118,55 @@ def run(
         on_event(
             "\nHeads up: some hops had low viewpoint overlap. Consider adding an "
             "intermediate angle between those frames for a truthful in-between."
+        )
+    return result
+
+
+def render_plan(
+    plan: Plan,
+    provider: VideoProvider,
+    out_dir: str,
+    duration_s: float = 3.0,
+    on_event=lambda msg: None,
+) -> PipelineResult:
+    """Render only the rooms/hops an operator approved in a reviewed plan.
+
+    This is the second half of the human-in-the-loop flow: `build_plan` +
+    approval decide *what* to render, this decides *how* and stitches it.
+    """
+    from .stitch import stitch
+
+    os.makedirs(out_dir, exist_ok=True)
+    result = PipelineResult()
+
+    # Group approved hops back under their room so we stitch per room.
+    per_room: dict[str, list] = {}
+    for room, hop in approved_hops(plan):
+        per_room.setdefault(room.label, []).append(hop)
+
+    if not per_room:
+        on_event("Nothing approved in this plan -- nothing to render.")
+        return result
+
+    for label, hops in per_room.items():
+        clip_paths: list[str] = []
+        for hop in hops:
+            on_event(
+                f"[{label}] rendering hop {hop.index}: "
+                f"{os.path.basename(hop.start)} -> {os.path.basename(hop.end)}"
+            )
+            clip_path = os.path.join(out_dir, f"{label}_hop{hop.index:02d}.mp4")
+            req = ClipRequest(start_image=hop.start, end_image=hop.end, duration_s=duration_s)
+            provider.generate_clip(req, clip_path)
+            clip_paths.append(clip_path)
+
+        walkthrough = None
+        if clip_paths:
+            walkthrough = os.path.join(out_dir, f"{label}_walkthrough.mp4")
+            stitch(clip_paths, walkthrough)
+            on_event(f"[{label}] walkthrough -> {walkthrough}")
+
+        result.rooms.append(
+            RoomResult(room_label=label, walkthrough_path=walkthrough, clip_paths=clip_paths)
         )
     return result

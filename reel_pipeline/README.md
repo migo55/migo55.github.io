@@ -23,6 +23,7 @@ middle becomes fiction — is measured and flagged automatically.
 ```
 photos --group_by_room--> rooms
 room   --order_room------> smooth start→end hops (+ safety flags)
+        \--> plan.json + preview images --> [ you approve ] --.
 hop    --provider--------> one clip (real start frame, real end frame)
 clips  --stitch---------> one continuous room walkthrough
 ```
@@ -41,12 +42,38 @@ clips  --stitch---------> one continuous room walkthrough
 
 ```bash
 pip install -r requirements.txt         # needs ffmpeg on PATH too
+```
 
+### Review-first flow (recommended for the first runs)
+
+Nothing renders until you approve the matchings the script guessed.
+
+```bash
+# 1. Propose room groupings + frame pairings. Writes plan.json AND a
+#    side-by-side preview image of every pairing. No rendering yet.
+python -m reel.cli plan ./photos --out ./out
+
+# 2. Open ./out/previews/*.jpg to eyeball each start -> end pairing, then
+#    approve. Either edit ./out/plan.json by hand (flip "approved": true/false),
+#    or approve interactively (y/n per room and per hop):
+python -m reel.cli approve --plan ./out/plan.json
+
+# 3. Render ONLY what you approved (needs KLING_API_KEY / RUNWAY_API_KEY / …):
+python -m reel.cli render --plan ./out/plan.json --provider kling --duration 5
+```
+
+In `plan.json`, `approved` defaults to the safety verdict — safe hops start
+approved, RISK hops start rejected — so if you change nothing you still get the
+truthful subset. Rejecting a whole room skips all its hops.
+
+### One-shot flow (once you trust the matchings)
+
+```bash
 # Offline dry run — verifies the whole pipeline with a crossfade stand-in:
-python -m reel.cli ./photos --provider mock --out ./out
+python -m reel.cli run ./photos --provider mock --out ./out
 
-# Real render once you have keys (KLING_API_KEY / RUNWAY_API_KEY / LUMA_API_KEY):
-python -m reel.cli ./photos --provider kling --duration 5 --skip-risky
+# Real render, dropping risky hops automatically:
+python -m reel.cli run ./photos --provider kling --duration 5 --skip-risky
 ```
 
 Flags:
